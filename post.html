@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Đăng Nhật Ký</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>📓 Viết Nhật Ký</h1>
+    <textarea id="content" placeholder="Hôm nay bạn muốn viết gì?"></textarea>
+    <input type="file" id="imageInput" accept="image/*">
+    <button onclick="postDiary()">Đăng</button>
+    <br><br>
+    <a href="index.html">➡ Xem nhật ký</a>
+  </div>
+
+  <hr>
+  <div class="container">
+    <h2>🗑 Quản lý nhật ký</h2>
+    <div id="managePosts"></div>
+  </div>
+
+  <script src="post.js"></script>
+</body>
+</html>
