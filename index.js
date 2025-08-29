@@ -16,7 +16,6 @@ window.onload = async function() {
       <p>${post.text}</p>
       ${post.image ? `<img src="${post.image}">` : ""}
     `;
-
     postsDiv.appendChild(div);
   });
 };
