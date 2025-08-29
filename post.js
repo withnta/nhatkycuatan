@@ -56,7 +56,6 @@ async function renderPosts() {
     div.className = "post";
 
     div.innerHTML = `
-      <p><b>${post.date}</b></p>
       <p>${post.text}</p>
       ${post.image ? `<img src="${post.image}">` : ""}
       <br>
