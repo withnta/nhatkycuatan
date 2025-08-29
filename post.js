@@ -17,8 +17,7 @@ async function postDiary() {
   let posts = await getPosts();
   posts.unshift({
     text: content,
-    image: imageBase64,
-    date: new Date().toLocaleString()
+    image: imageBase64
   });
 
   await savePosts(posts);
