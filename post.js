@@ -1,4 +1,5 @@
-function postDiary() {
+// Đăng nhật ký mới
+async function postDiary() {
   let content = document.getElementById("content").value;
   let imageInput = document.getElementById("imageInput").files[0];
 
@@ -7,41 +8,41 @@ function postDiary() {
     return;
   }
 
-  let reader = new FileReader();
-  reader.onload = function (e) {
-    let posts = JSON.parse(localStorage.getItem("posts")) || [];
-    posts.unshift({
-      text: content,
-      image: e.target.result || null,
-      date: new Date().toLocaleString()
-    });
-    localStorage.setItem("posts", JSON.stringify(posts));
-    alert("Đăng thành công!");
-    renderPosts();
-  };
-
+  // Convert ảnh sang base64
+  let imageBase64 = null;
   if (imageInput) {
-    reader.readAsDataURL(imageInput);
-  } else {
-    let posts = JSON.parse(localStorage.getItem("posts")) || [];
-    posts.unshift({
-      text: content,
-      image: null,
-      date: new Date().toLocaleString()
-    });
-    localStorage.setItem("posts", JSON.stringify(posts));
-    alert("Đăng thành công!");
-    renderPosts();
+    imageBase64 = await toBase64(imageInput);
   }
+
+  let posts = await getPosts();
+  posts.unshift({
+    text: content,
+    image: imageBase64,
+    date: new Date().toLocaleString()
+  });
+
+  await savePosts(posts);
+  alert("Đăng thành công!");
+  renderPosts();
 
   // Reset form
   document.getElementById("content").value = "";
   document.getElementById("imageInput").value = "";
 }
 
-// Hàm hiển thị & quản lý bài viết
-function renderPosts() {
-  let posts = JSON.parse(localStorage.getItem("posts")) || [];
+// Chuyển file sang Base64
+function toBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+// Hiển thị & quản lý bài viết
+async function renderPosts() {
+  let posts = await getPosts();
   let container = document.getElementById("managePosts");
 
   if (posts.length === 0) {
@@ -66,15 +67,15 @@ function renderPosts() {
   });
 }
 
-// Hàm xóa bài viết
-function deletePost(index) {
-  let posts = JSON.parse(localStorage.getItem("posts")) || [];
+// Xóa bài viết
+async function deletePost(index) {
+  let posts = await getPosts();
   if (confirm("Bạn có chắc muốn xóa bài này không?")) {
     posts.splice(index, 1);
-    localStorage.setItem("posts", JSON.stringify(posts));
+    await savePosts(posts);
     renderPosts();
   }
 }
 
-// Gọi khi load trang để hiển thị sẵn
+// Load khi mở trang post.html
 window.onload = renderPosts;
