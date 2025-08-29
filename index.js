@@ -1,6 +1,7 @@
-window.onload = function() {
-  let posts = JSON.parse(localStorage.getItem("posts")) || [];
+// Hiển thị bài viết ở trang chính
+window.onload = async function() {
   let postsDiv = document.getElementById("posts");
+  let posts = await getPosts();
 
   if (posts.length === 0) {
     postsDiv.innerHTML = "<p>Chưa có bài viết nào 🌱</p>";
