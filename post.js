@@ -8,18 +8,18 @@ async function uploadToImgBB(file) {
     body: form
   });
 
-  // Tự động biến link trong text thành <a>
-function linkify(text) {
-  let urlPattern = /(https?:\/\/[^\s]+)/g;
-  return text.replace(urlPattern, '<a href="$1" target="_blank">$1</a>');
-}
-
   let data = await res.json();
   if (data.success) {
     return data.data.url; // link ảnh public
   } else {
     throw new Error("Upload ảnh thất bại!");
   }
+}
+
+// 🔗 Tự động biến link trong text thành <a>
+function linkify(text) {
+  let urlPattern = /(https?:\/\/[^\s]+)/g;
+  return text.replace(urlPattern, '<a href="$1" target="_blank">$1</a>');
 }
 
 // Đăng nhật ký mới
@@ -68,7 +68,7 @@ async function renderPosts() {
     div.className = "post";
 
     div.innerHTML = `
-       <p>${linkify(post.text)}</p>
+      <p>${linkify(post.text)}</p>
       ${post.image ? `<img src="${post.image}" alt="Ảnh nhật ký">` : ""}
       <br>
       <button onclick="deletePost(${index})">❌ Xóa</button>
