@@ -1,3 +1,21 @@
+// Upload ảnh lên ImgBB
+async function uploadToImgBB(file) {
+  let form = new FormData();
+  form.append("image", file);
+
+  let res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`, {
+    method: "POST",
+    body: form
+  });
+
+  let data = await res.json();
+  if (data.success) {
+    return data.data.url; // link ảnh public
+  } else {
+    throw new Error("Upload ảnh thất bại!");
+  }
+}
+
 // Đăng nhật ký mới
 async function postDiary() {
   let content = document.getElementById("content").value;
@@ -8,16 +26,15 @@ async function postDiary() {
     return;
   }
 
-  // Convert ảnh sang base64
-  let imageBase64 = null;
+  let imageUrl = null;
   if (imageInput) {
-    imageBase64 = await toBase64(imageInput);
+    imageUrl = await uploadToImgBB(imageInput); // upload lên imgbb
   }
 
   let posts = await getPosts();
   posts.unshift({
     text: content,
-    image: imageBase64
+    image: imageUrl
   });
 
   await savePosts(posts);
@@ -27,16 +44,6 @@ async function postDiary() {
   // Reset form
   document.getElementById("content").value = "";
   document.getElementById("imageInput").value = "";
-}
-
-// Chuyển file sang Base64
-function toBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
 }
 
 // Hiển thị & quản lý bài viết
@@ -56,7 +63,7 @@ async function renderPosts() {
 
     div.innerHTML = `
       <p>${post.text}</p>
-      ${post.image ? `<img src="${post.image}">` : ""}
+      ${post.image ? `<img src="${post.image}" alt="Ảnh nhật ký">` : ""}
       <br>
       <button onclick="deletePost(${index})">❌ Xóa</button>
     `;
