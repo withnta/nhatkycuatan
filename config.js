@@ -1,7 +1,10 @@
 // ⚡ config.js
-const API_KEY = "$2a$10$dAvdg1raFJw4BYOlcjbPQ.FiWtB.HHY5urEV/RR5zqQgNuQO2gE12";   // Dán API Key JSONBin ở đây
-const BIN_ID = "68b1c417d0ea881f406a53ff";     // Dán Bin ID ở đây
+const API_KEY = "$2a$10$dAvdg1raFJw4BYOlcjbPQ.FiWtB.HHY5urEV/RR5zqQgNuQO2gE12";   // Key JSONBin
+const BIN_ID = "68b1c417d0ea881f406a53ff";     // Bin ID JSONBin
 const BASE_URL = "https://api.jsonbin.io/v3/b/";
+
+// Thêm API Key ImgBB
+const IMGBB_KEY = "aeca5a388af492ab00bd2672a53546aa";   // Lấy tại https://api.imgbb.com/
 
 // Hàm lấy bài viết
 async function getPosts() {
