@@ -68,20 +68,4 @@ button:hover {
   max-width: 100%;
   margin-top: 10px;
   border-radius: 5px;
-}
-.reactions {
-  margin-top: 8px;
-}
-
-.like-btn {
-  background: #c62020;
-  border: none;
-  padding: 6px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.like-btn:hover {
-  background: #ddd;
-}
+};
