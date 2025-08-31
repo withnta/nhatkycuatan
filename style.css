@@ -38,20 +38,6 @@ input[type="file"] {
   margin-bottom: 10px;
 }
 
-button {
-  background: #4caf50;
-  color: white;
-  border: none;
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #45a049;
-}
-
 #posts {
   margin-top: 20px;
 }
