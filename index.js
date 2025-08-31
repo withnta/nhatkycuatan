@@ -12,8 +12,19 @@ window.onload = async function() {
     let div = document.createElement("div");
     div.className = "post";
 
+    // lấy text gốc (ưu tiên text, fallback sang content)
+    const raw = post.text ?? post.content ?? "";
+
+    // biến text thành clickable link
+    const textWithLinks = raw
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>')
+      .replace(/\n/g, "<br>");
+
     div.innerHTML = `
-      <p>${post.text}</p>
+      <p>${textWithLinks}</p>
       ${post.image ? `<img src="${post.image}">` : ""}
     `;
     postsDiv.appendChild(div);
