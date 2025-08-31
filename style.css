@@ -71,3 +71,23 @@ input[type="file"] {
 .like-btn:hover {
   background: #4befe6;
 }
+
+
+/* FOOTER */
+.site-footer {
+  background: #1e1e1e;
+  color: #aaa;
+  text-align: center;
+  padding: 15px 10px;
+  margin-top: 30px;
+  border-top: 3px solid #444;
+}
+
+.site-footer p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.site-footer p:hover {
+  color: #fff;
+}
