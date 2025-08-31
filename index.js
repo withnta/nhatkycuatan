@@ -8,7 +8,7 @@ window.onload = async function() {
     return;
   }
 
-  posts.forEach(post => {
+  posts.forEach((post, index) => {
     let div = document.createElement("div");
     div.className = "post";
 
@@ -26,7 +26,22 @@ window.onload = async function() {
     div.innerHTML = `
       <p>${textWithLinks}</p>
       ${post.image ? `<img src="${post.image}">` : ""}
+      <div class="reactions">
+        <button class="like-btn">👍 Like (<span>${post.likes || 0}</span>)</button>
+      </div>
     `;
+
+    // xử lý click Like
+    let likeBtn = div.querySelector(".like-btn");
+    likeBtn.addEventListener("click", async () => {
+      post.likes = (post.likes || 0) + 1;
+      likeBtn.querySelector("span").textContent = post.likes;
+
+      // lưu lại vào JSONBin
+      posts[index] = post;
+      await savePosts(posts);
+    });
+
     postsDiv.appendChild(div);
   });
 };
