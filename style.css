@@ -91,3 +91,20 @@ input[type="file"] {
 .site-footer p:hover {
   color: #fff;
 }
+.nickname-input,
+.comment-input,
+.comment-form input[type="text"],
+.comment-form textarea {
+  width: 100%;
+  padding: 6px;          /* gọn hơn */
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  box-sizing: border-box;
+}
+
+.comment-input {
+  height: 60px;          /* nhỏ lại khung comment */
+  resize: vertical;      /* cho phép kéo to nếu cần */
+}

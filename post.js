@@ -7,7 +7,6 @@ async function uploadToImgBB(file) {
     method: "POST",
     body: form
   });
-  
 
   let data = await res.json();
   if (data.success) {
@@ -35,7 +34,8 @@ async function postDiary() {
   let posts = await getPosts();
   posts.unshift({
     text: content,
-    image: imageUrl
+    image: imageUrl,
+    comments: [] // thêm mảng comments rỗng cho mỗi bài
   });
 
   await savePosts(posts);
@@ -47,7 +47,7 @@ async function postDiary() {
   document.getElementById("imageInput").value = "";
 }
 
-// Hiển thị & quản lý bài viết
+// Hiển thị & quản lý bài viết + comment
 async function renderPosts() {
   let posts = await getPosts();
   let container = document.getElementById("managePosts");
@@ -62,11 +62,33 @@ async function renderPosts() {
     let div = document.createElement("div");
     div.className = "post";
 
+    // danh sách comment (nếu có)
+    let commentHTML = "";
+    if (post.comments && post.comments.length > 0) {
+      commentHTML = `
+        <div class="comments">
+          <h4>Bình luận:</h4>
+          <ul>
+            ${post.comments
+              .map(
+                (cmt, cIndex) => `
+              <li>
+                <b>${cmt.nickname}:</b> ${cmt.text}
+                <button onclick="deleteComment(${index}, ${cIndex})">❌</button>
+              </li>`
+              )
+              .join("")}
+          </ul>
+        </div>
+      `;
+    }
+
     div.innerHTML = `
       <p>${post.text}</p>
       ${post.image ? `<img src="${post.image}" alt="Ảnh nhật ký">` : ""}
       <br>
-      <button onclick="deletePost(${index})">❌ Xóa</button>
+      <button onclick="deletePost(${index})">❌ Xóa bài</button>
+      ${commentHTML}
     `;
 
     container.appendChild(div);
@@ -81,6 +103,14 @@ async function deletePost(index) {
     await savePosts(posts);
     renderPosts();
   }
+}
+
+// Xóa 1 comment trong bài viết
+async function deleteComment(postIndex, commentIndex) {
+  let posts = await getPosts();
+  posts[postIndex].comments.splice(commentIndex, 1);
+  await savePosts(posts);
+  renderPosts();
 }
 
 // Load khi mở trang post.html
