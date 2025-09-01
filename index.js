@@ -41,8 +41,12 @@ function renderPosts() {
     }
 
     div.innerHTML = `
+      <div class="post-header">
+        <img src="nhatky.jpg" class="avatar">
+        <span class="author">datbointa</span>
+      </div>
       <p>${textWithLinks}</p>
-      ${post.image ? `<img src="${post.image}">` : ""}
+      ${post.image ? `<img src="${post.image}" class="post-img">` : ""}
       <div class="reactions">
         <button class="like-btn">👍 Like (<span>${post.likes || 0}</span>)</button>
       </div>
