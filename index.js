@@ -124,8 +124,10 @@ function renderPosts() {
 }
 
 window.onload = async function() {
+  document.getElementById("loading").style.display = "block"; // hiện spinner
   posts = await getPosts();
   renderPosts();
+  document.getElementById("loading").style.display = "none";  // ẩn spinner
 
   document.getElementById("prevBtn").addEventListener("click", () => {
     if (currentPage > 1) {
