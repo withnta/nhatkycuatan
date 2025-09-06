@@ -51,6 +51,11 @@ function renderPosts() {
       ${post.image ? `<img src="${post.image}" class="post-img">` : ""}
       <div class="reactions">
         <button class="like-btn">👍 Like (<span>${post.likes || 0}</span>)</button>
+        <!-- Thêm các reaction khác -->
+        <button class="reaction-btn" data-type="love">❤️ (<span>${post.reactions?.love || 0}</span>)</button>
+        <button class="reaction-btn" data-type="haha">😆 (<span>${post.reactions?.haha || 0}</span>)</button>
+        <button class="reaction-btn" data-type="sad">😢 (<span>${post.reactions?.sad || 0}</span>)</button>
+        <button class="reaction-btn" data-type="angry">😡 (<span>${post.reactions?.angry || 0}</span>)</button>
       </div>
       
       <!-- 
@@ -71,6 +76,21 @@ function renderPosts() {
       posts[globalIndex].likes = (posts[globalIndex].likes || 0) + 1;
       likeBtn.querySelector("span").textContent = posts[globalIndex].likes;
       await savePosts(posts);
+    });
+
+    // xử lý click cho các reaction khác
+    let reactionBtns = div.querySelectorAll(".reaction-btn");
+    reactionBtns.forEach(btn => {
+      btn.addEventListener("click", async () => {
+        let type = btn.getAttribute("data-type");
+        let globalIndex = start + index;
+
+        if (!posts[globalIndex].reactions) posts[globalIndex].reactions = {};
+        posts[globalIndex].reactions[type] = (posts[globalIndex].reactions[type] || 0) + 1;
+
+        btn.querySelector("span").textContent = posts[globalIndex].reactions[type];
+        await savePosts(posts);
+      });
     });
 
     // xử lý comment (đã comment lại toàn bộ)

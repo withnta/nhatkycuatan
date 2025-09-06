@@ -183,3 +183,28 @@ input[type="file"] {
   z-index: 1;   /* nằm trên GIF */
 }
 
+.reactions {
+  margin-top: 8px;
+  display: flex;
+  gap: 6px; /* khoảng cách giữa các nút */
+}
+
+.reaction-btn {
+  background: #05d3ea;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+  font-weight: bold;
+  color: #fff;
+}
+
+.reaction-btn:hover {
+  background: #4befe6;
+  transform: scale(1.05);
+}
+
+.reaction-btn:active {
+  transform: scale(0.95);
+}
