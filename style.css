@@ -208,3 +208,35 @@ input[type="file"] {
 .reaction-btn:active {
   transform: scale(0.95);
 }
+.side-gif {
+  position: fixed;
+  width: 150px; /* chỉnh to nhỏ */
+  height: auto;
+  z-index: -1; /* đẩy ra sau nội dung */
+}
+
+.left-gif {
+  left: 20px;
+}
+
+.right-gif {
+  right: 20px;
+}
+
+/* Tầng 1 */
+.left-gif {
+  top: 100px;
+}
+
+.right-gif {
+  top: 100px;
+}
+
+/* Tầng 2 (nằm dưới tầng 1) */
+.bottom-left {
+  top: 400px; /* chỉnh để nó xuống dưới cái đầu */
+}
+
+.bottom-right {
+  top: 400px;
+}
