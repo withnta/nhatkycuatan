@@ -125,3 +125,61 @@ input[type="file"] {
   font-weight: bold;
   color: #333;
 }
+.like-btn {
+  background: #05d3ea;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+  font-weight: bold;
+  color: #fff;
+}
+
+.like-btn:hover {
+  background: #4befe6;
+  transform: scale(1.05);
+}
+
+.like-btn:active {
+  transform: scale(0.95);
+}
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  box-shadow: 0 0 15px #05d3ea, 0 0 30px #05d3ea;
+  animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 10px #05d3ea, 0 0 20px #05d3ea;
+  }
+  to {
+    box-shadow: 0 0 20px #0fd143, 0 0 40px #000f11;
+  }
+}
+
+.side-gif {
+  position: fixed;   /* giữ cố định khi scroll */
+  top: 120px;        /* chỉnh cao thấp theo ý bạn */
+  width: 150px;      /* giới hạn chiều rộng */
+  height: auto;      /* giữ tỉ lệ ảnh */
+  z-index: 0;        /* nằm dưới container */
+  opacity: 0.9;      /* hơi mờ cho đỡ rối mắt */
+}
+
+.left-gif {
+  left: 20px;   /* cách mép trái */
+}
+
+.right-gif {
+  right: 20px;  /* cách mép phải */
+}
+
+.container {
+  position: relative;
+  z-index: 1;   /* nằm trên GIF */
+}
+

@@ -30,11 +30,9 @@ function renderPosts() {
       .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>')
       .replace(/\n/g, "<br>");
 
-      let commentsHtml = "";
-
-    // comments
-    /*
+    // Giữ biến commentsHtml nhưng không dùng (tránh lỗi)
     let commentsHtml = "";
+    /*
     if (post.comments && post.comments.length > 0) {
       commentsHtml = post.comments.map(c => `
         <div class="comment">
@@ -75,7 +73,7 @@ function renderPosts() {
       await savePosts(posts);
     });
 
-    // xử lý comment
+    // xử lý comment (đã comment lại toàn bộ)
     /*
     let commentBtn = div.querySelector(".comment-btn");
     commentBtn.addEventListener("click", async () => {
