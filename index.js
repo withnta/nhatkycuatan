@@ -30,7 +30,10 @@ function renderPosts() {
       .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>')
       .replace(/\n/g, "<br>");
 
+      let commentsHtml = "";
+
     // comments
+    /*
     let commentsHtml = "";
     if (post.comments && post.comments.length > 0) {
       commentsHtml = post.comments.map(c => `
@@ -39,6 +42,7 @@ function renderPosts() {
         </div>
       `).join("");
     }
+    */
 
     div.innerHTML = `
       <div class="post-header">
@@ -50,6 +54,8 @@ function renderPosts() {
       <div class="reactions">
         <button class="like-btn">👍 Like (<span>${post.likes || 0}</span>)</button>
       </div>
+      
+      <!-- 
       <div class="comments">
         <h4>💬 Bình luận</h4>
         <div class="comments-list">${commentsHtml || "<p>Chưa có bình luận nào</p>"}</div>
@@ -57,6 +63,7 @@ function renderPosts() {
         <textarea class="comment-input" placeholder="Nhập bình luận..."></textarea>
         <button class="comment-btn">Gửi</button>
       </div>
+      -->
     `;
 
     // xử lý click Like
@@ -69,6 +76,7 @@ function renderPosts() {
     });
 
     // xử lý comment
+    /*
     let commentBtn = div.querySelector(".comment-btn");
     commentBtn.addEventListener("click", async () => {
       let globalIndex = start + index;
@@ -86,6 +94,7 @@ function renderPosts() {
       await savePosts(posts);
       renderPosts(); // refresh lại để thấy comment mới
     });
+    */
 
     postsDiv.appendChild(div);
   });
