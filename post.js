@@ -102,7 +102,23 @@ async function renderPosts() {
 // 🎵 Hàm render nhạc
 function renderAudio(url) {
   if (url.includes("youtube.com") || url.includes("youtu.be")) {
-    return `<iframe width="100%" height="200" src="${url.replace("watch?v=", "embed/")}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+    let videoId = "";
+
+    // xử lý link youtube đầy đủ
+    if (url.includes("watch?v=")) {
+      videoId = new URL(url).searchParams.get("v");
+    }
+
+    // xử lý link youtube rút gọn
+    if (url.includes("youtu.be/")) {
+      videoId = url.split("youtu.be/")[1].split("?")[0];
+    }
+
+    if (videoId) {
+      return `<iframe width="100%" height="200" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+    } else {
+      return `<a href="${url}" target="_blank">📺 Xem video trên YouTube</a>`;
+    }
   } else if (url.includes("soundcloud.com")) {
     return `<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}"></iframe>`;
   } else if (url.endsWith(".mp3")) {
@@ -111,6 +127,7 @@ function renderAudio(url) {
     return `<a href="${url}" target="_blank">🎵 Nghe nhạc tại đây</a>`;
   }
 }
+
 
 // Xóa bài viết
 async function deletePost(index) {
