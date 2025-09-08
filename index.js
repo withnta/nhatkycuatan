@@ -49,6 +49,7 @@ function renderPosts() {
       </div>
       <p>${textWithLinks}</p>
       ${post.image ? `<img src="${post.image}" class="post-img">` : ""}
+      ${post.audio ? renderAudio(post.audio) : ""}  <!-- 🎵 thêm -->
       <div class="reactions">
         <button class="like-btn">👍 Like (<span>${post.likes || 0}</span>)</button>
         <!-- Thêm các reaction khác -->
@@ -123,11 +124,26 @@ function renderPosts() {
   document.getElementById("nextBtn").disabled = currentPage === totalPages;
 }
 
+function renderAudio(url) {
+  if (url.includes("youtube.com") || url.includes("youtu.be")) {
+    return `<iframe width="100%" height="200" src="${url.replace("watch?v=", "embed/")}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+  } else if (url.includes("soundcloud.com")) {
+    return `<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}"></iframe>`;
+  } else if (url.endsWith(".mp3")) {
+    return `<audio controls><source src="${url}" type="audio/mpeg"></audio>`;
+  } else {
+    return `<a href="${url}" target="_blank">🎵 Nghe nhạc tại đây</a>`;
+  }
+}
+
 window.onload = async function() {
-  document.getElementById("loading").style.display = "block"; // hiện spinner
+  let loadingEl = document.getElementById("loading");
+  if (loadingEl) loadingEl.style.display = "block"; // hiện spinner nếu có
+
   posts = await getPosts();
   renderPosts();
-  document.getElementById("loading").style.display = "none";  // ẩn spinner
+
+  if (loadingEl) loadingEl.style.display = "none";  // ẩn spinner nếu có
 
   document.getElementById("prevBtn").addEventListener("click", () => {
     if (currentPage > 1) {

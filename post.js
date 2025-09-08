@@ -20,9 +20,10 @@ async function uploadToImgBB(file) {
 async function postDiary() {
   let content = document.getElementById("content").value;
   let imageInput = document.getElementById("imageInput").files[0];
+  let audioLink = document.getElementById("audioInput").value.trim(); // 🎵 thêm
 
-  if (!content && !imageInput) {
-    alert("Vui lòng viết gì đó hoặc chọn ảnh!");
+  if (!content && !imageInput && !audioLink) {
+    alert("Vui lòng viết gì đó hoặc chọn ảnh/nhạc!");
     return;
   }
 
@@ -35,7 +36,8 @@ async function postDiary() {
   posts.unshift({
     text: content,
     image: imageUrl,
-    comments: [] // thêm mảng comments rỗng cho mỗi bài
+    audio: audioLink, // 🎵 thêm
+    comments: []
   });
 
   await savePosts(posts);
@@ -45,6 +47,7 @@ async function postDiary() {
   // Reset form
   document.getElementById("content").value = "";
   document.getElementById("imageInput").value = "";
+  document.getElementById("audioInput").value = ""; // 🎵 reset
 }
 
 // Hiển thị & quản lý bài viết + comment
@@ -86,6 +89,7 @@ async function renderPosts() {
     div.innerHTML = `
       <p>${post.text}</p>
       ${post.image ? `<img src="${post.image}" alt="Ảnh nhật ký">` : ""}
+      ${post.audio ? renderAudio(post.audio) : ""} <!-- 🎵 hiển thị nhạc -->
       <br>
       <button onclick="deletePost(${index})">❌ Xóa bài</button>
       ${commentHTML}
@@ -93,6 +97,19 @@ async function renderPosts() {
 
     container.appendChild(div);
   });
+}
+
+// 🎵 Hàm render nhạc
+function renderAudio(url) {
+  if (url.includes("youtube.com") || url.includes("youtu.be")) {
+    return `<iframe width="100%" height="200" src="${url.replace("watch?v=", "embed/")}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+  } else if (url.includes("soundcloud.com")) {
+    return `<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}"></iframe>`;
+  } else if (url.endsWith(".mp3")) {
+    return `<audio controls><source src="${url}" type="audio/mpeg"></audio>`;
+  } else {
+    return `<a href="${url}" target="_blank">🎵 Nghe nhạc tại đây</a>`;
+  }
 }
 
 // Xóa bài viết
