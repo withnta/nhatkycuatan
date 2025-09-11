@@ -1,5 +1,5 @@
 // Số bài viết mỗi trang
-const POSTS_PER_PAGE = 5;
+const POSTS_PER_PAGE = 6;
 let currentPage = 1;
 let posts = [];
 
@@ -180,4 +180,15 @@ window.onload = async function() {
       renderPosts();
     }
   });
-};
+
+  // 👇 Popup code phải nằm trong đây
+  let popup = document.getElementById("welcomePopup");
+  let closeBtn = document.getElementById("closePopup");
+
+  if (popup && closeBtn) {
+    popup.style.display = "flex"; // hiện popup khi load trang
+    closeBtn.addEventListener("click", () => {
+      popup.style.display = "none";
+    });
+  }
+}; // ✅ đóng đúng chỗ
