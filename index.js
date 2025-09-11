@@ -29,10 +29,7 @@ function renderPosts() {
       .replace(/>/g, "&gt;")
       .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>')
       .replace(/\n/g, "<br>");
-     // Nếu chưa có views thì gán 0
-    post.views = post.views || 0;
-    // Cộng thêm 1 view khi render
-    post.views++;
+   
 
     // Giữ biến commentsHtml nhưng không dùng (tránh lỗi)
     let commentsHtml = "";
@@ -63,10 +60,7 @@ function renderPosts() {
         <button class="reaction-btn" data-type="sad">😢 (<span>${post.reactions?.sad || 0}</span>)</button>
         <button class="reaction-btn" data-type="angry">😡 (<span>${post.reactions?.angry || 0}</span>)</button>
 
-         <!-- 👇 Thêm view count -->
-  <span class="view-count">
-    <span class="eye">👁️</span> ${post.views || 0}
-  </span>
+         
       </div>
       
       <!-- 
