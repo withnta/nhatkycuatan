@@ -181,14 +181,5 @@ window.onload = async function() {
     }
   });
 
-  // 👇 Popup code phải nằm trong đây
-  let popup = document.getElementById("welcomePopup");
-  let closeBtn = document.getElementById("closePopup");
-
-  if (popup && closeBtn) {
-    popup.style.display = "flex"; // hiện popup khi load trang
-    closeBtn.addEventListener("click", () => {
-      popup.style.display = "none";
-    });
-  }
+ 
 }; // ✅ đóng đúng chỗ
