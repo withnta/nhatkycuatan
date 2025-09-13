@@ -183,3 +183,58 @@ window.onload = async function() {
 
  
 }; // ✅ đóng đúng chỗ
+const petEl = document.getElementById("pet");
+const bubbleEl = document.getElementById("petBubble");
+const feedBtn = document.getElementById("feedBtn");
+
+const petMessages = [
+  "Meow~ 😺",
+  "Đói quá 🍖",
+  "Ngủ thôi 😴",
+  "Chơi với tui đi 🎾",
+  "Vui ghê 🎉"
+];
+
+// 🐾 Hàm hiện bong bóng
+function showBubble(msg) {
+  bubbleEl.textContent = msg;
+  bubbleEl.classList.remove("hidden");
+  setTimeout(() => bubbleEl.classList.add("hidden"), 2000);
+}
+
+// 🐾 Click pet -> nói chuyện
+petEl.addEventListener("click", () => {
+  let msg = petMessages[Math.floor(Math.random() * petMessages.length)];
+  showBubble(msg);
+});
+
+// 🐾 Cho ăn
+feedBtn.addEventListener("click", () => {
+  showBubble("Nom nom 🍖 ngon quá!");
+  petEl.style.transform = "scale(1.2)";
+  setTimeout(() => petEl.style.transform = "scale(1)", 500);
+});
+
+// 🐾 Pet di chuyển random
+setInterval(() => {
+  let x = Math.random() * (window.innerWidth - 100);
+  let y = Math.random() * (window.innerHeight - 100);
+  petEl.style.left = `${x}px`;
+  petEl.style.top = `${y}px`;
+}, 3000); // mỗi 5s chạy sang chỗ khác
+function showBubble(msg) {
+  bubbleEl.textContent = msg;
+  bubbleEl.classList.remove("hidden");
+
+  // Nếu pet quá gần mép dưới màn hình -> đẩy bubble lên trên pet
+  let petRect = petEl.getBoundingClientRect();
+  if (petRect.bottom + 60 > window.innerHeight) {
+    bubbleEl.style.bottom = "auto";
+    bubbleEl.style.top = "-40px";  // hiện lên trên
+  } else {
+    bubbleEl.style.top = "auto";
+    bubbleEl.style.bottom = "60px"; // mặc định dưới pet
+  }
+
+  setTimeout(() => bubbleEl.classList.add("hidden"), 2000);
+}

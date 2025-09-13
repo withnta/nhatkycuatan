@@ -299,3 +299,40 @@ body {
 .view-count .eye {
   font-size: 16px;
 }
+#pet {
+  position: fixed;
+  bottom: 50px;
+  left: 50px;
+  font-size: 40px;
+  cursor: pointer;
+  transition: transform 0.3s ease, left 1s ease, top 1s ease;
+  z-index: 9999;
+}
+
+#petBubble {
+  position: absolute;
+  bottom: 60px;   /* bubble nằm phía trên con mèo */
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 5px 10px;
+  font-size: 14px;
+  white-space: nowrap;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  z-index: 10000;
+
+  /* ✅ thêm giới hạn: nếu chạm mép dưới thì đẩy bubble lên trên */
+  pointer-events: none; /* không bị cản click */
+}
+
+.hidden {
+  display: none;
+}
+
+#petControls {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+}
