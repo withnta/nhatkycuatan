@@ -202,11 +202,10 @@ function showBubble(msg) {
   setTimeout(() => bubbleEl.classList.add("hidden"), 2000);
 }
 
-// 🐾 Click pet -> nói chuyện
-petEl.addEventListener("click", () => {
+setInterval(() => {
   let msg = petMessages[Math.floor(Math.random() * petMessages.length)];
   showBubble(msg);
-});
+}, 3000);
 
 // 🐾 Cho ăn
 feedBtn.addEventListener("click", () => {
