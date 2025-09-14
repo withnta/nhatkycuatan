@@ -305,7 +305,7 @@ body {
   left: 50px;
   font-size: 40px;
   cursor: pointer;
-  transition: transform 0.3s ease, left 3s ease, top 3s ease;
+  transition: transform 0.2s ease, left 3s ease, top 3s ease;
   z-index: 9999;
 }
 
