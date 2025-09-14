@@ -59,8 +59,6 @@ function renderPosts() {
         <button class="reaction-btn" data-type="haha">😆 (<span>${post.reactions?.haha || 0}</span>)</button>
         <button class="reaction-btn" data-type="sad">😢 (<span>${post.reactions?.sad || 0}</span>)</button>
         <button class="reaction-btn" data-type="angry">😡 (<span>${post.reactions?.angry || 0}</span>)</button>
-
-         
       </div>
       
       <!-- 
@@ -73,7 +71,7 @@ function renderPosts() {
       </div>
       -->
     `;
-
+    
     // xử lý click Like
     let likeBtn = div.querySelector(".like-btn");
     likeBtn.addEventListener("click", async () => {
@@ -81,6 +79,7 @@ function renderPosts() {
       posts[globalIndex].likes = (posts[globalIndex].likes || 0) + 1;
       likeBtn.querySelector("span").textContent = posts[globalIndex].likes;
       await savePosts(posts);
+      addPetExp(1);
     });
 
     // xử lý click cho các reaction khác
@@ -95,6 +94,7 @@ function renderPosts() {
 
         btn.querySelector("span").textContent = posts[globalIndex].reactions[type];
         await savePosts(posts);
+        addPetExp(1);
       });
     });
 
@@ -116,6 +116,7 @@ function renderPosts() {
 
       await savePosts(posts);
       renderPosts(); // refresh lại để thấy comment mới
+      addPetExp(2);
     });
     */
 
@@ -163,6 +164,8 @@ window.onload = async function() {
 
   posts = await getPosts();
   renderPosts();
+  renderPetExp();
+  upgradePet();
 
   if (loadingEl) loadingEl.style.display = "none";  // ẩn spinner nếu có
 
@@ -181,8 +184,14 @@ window.onload = async function() {
     }
   });
 
- 
-}; // ✅ đóng đúng chỗ
+  // ✅ Đặt interval sau khi DOM sẵn sàng
+  setInterval(() => {
+    let msg = petMessages[Math.floor(Math.random() * petMessages.length)];
+    showBubble(msg);
+  }, 3000);
+};
+
+// ----------------- PET -----------------
 const petEl = document.getElementById("pet");
 const bubbleEl = document.getElementById("petBubble");
 const feedBtn = document.getElementById("feedBtn");
@@ -197,43 +206,76 @@ const petMessages = [
 
 // 🐾 Hàm hiện bong bóng
 function showBubble(msg) {
+  if (!bubbleEl) return; // nếu DOM chưa load thì thoát
+
   bubbleEl.textContent = msg;
   bubbleEl.classList.remove("hidden");
+
+  // reset vị trí
+  bubbleEl.style.top = "auto";
+  bubbleEl.style.bottom = "60px";
+
+  // nếu gần mép dưới -> đẩy bubble lên trên
+  let petRect = petEl.getBoundingClientRect();
+  if (petRect.bottom + 60 > window.innerHeight) {
+    bubbleEl.style.bottom = "auto";
+    bubbleEl.style.top = "-40px";
+  }
+
   setTimeout(() => bubbleEl.classList.add("hidden"), 2000);
 }
 
-setInterval(() => {
-  let msg = petMessages[Math.floor(Math.random() * petMessages.length)];
-  showBubble(msg);
-}, 3000);
-
-// 🐾 Cho ăn
+// Cho ăn
 feedBtn.addEventListener("click", () => {
   showBubble("Nom nom 🍖 ngon quá!");
   petEl.style.transform = "scale(1.2)";
   setTimeout(() => petEl.style.transform = "scale(1)", 500);
 });
 
-// 🐾 Pet di chuyển random
+// Pet di chuyển random
 setInterval(() => {
   let x = Math.random() * (window.innerWidth - 100);
   let y = Math.random() * (window.innerHeight - 100);
   petEl.style.left = `${x}px`;
   petEl.style.top = `${y}px`;
-}, 3000); // mỗi 5s chạy sang chỗ khác
-function showBubble(msg) {
-  bubbleEl.textContent = msg;
-  bubbleEl.classList.remove("hidden");
+}, 3000); // mỗi 3s chạy sang chỗ khác
 
-  // Nếu pet quá gần mép dưới màn hình -> đẩy bubble lên trên pet
-  let petRect = petEl.getBoundingClientRect();
-  if (petRect.bottom + 60 > window.innerHeight) {
-    bubbleEl.style.bottom = "auto";
-    bubbleEl.style.top = "-40px";  // hiện lên trên
-  } else {
-    bubbleEl.style.top = "auto";
-    bubbleEl.style.bottom = "60px"; // mặc định dưới pet
+// ----------------- PET EXP -----------------
+let petData = JSON.parse(localStorage.getItem("petData")) || { exp: 0, level: 1 };
+
+function savePetData() {
+  localStorage.setItem("petData", JSON.stringify(petData));
+}
+
+function addPetExp(amount = 1) {
+  petData.exp += amount;
+
+  // mỗi level cần 10 EXP
+  let required = petData.level * 10;
+  if (petData.exp >= required) {
+    petData.exp -= required;
+    petData.level++;
+    showBubble(`🎉 Level Up! Mèo đạt cấp ${petData.level}`);
+    upgradePet();
   }
 
-  setTimeout(() => bubbleEl.classList.add("hidden"), 2000);
+  savePetData();
+  renderPetExp();
+}
+
+function renderPetExp() {
+  let required = petData.level * 10;
+  let percent = (petData.exp / required) * 100;
+  document.getElementById("expFill").style.width = percent + "%";
+  document.getElementById("petLevel").textContent = `Level ${petData.level}`;
+}
+
+function upgradePet() {
+  if (petData.level % 5 === 0) {
+    petEl.textContent = "🐉"; // cấp 5 thành rồng
+  } else if (petData.level % 3 === 0) {
+    petEl.textContent = "🐯"; // cấp 3 thành hổ
+  } else {
+    petEl.textContent = "🐈"; // mặc định mèo
+  }
 }
