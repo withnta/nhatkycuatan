@@ -213,6 +213,53 @@ feedBtn.addEventListener("click", () => {
   petEl.style.transform = "scale(1.2)";
   setTimeout(() => petEl.style.transform = "scale(1)", 500);
 });
+// 🥩 Thanh no/đói
+const hungerBar = document.getElementById("hungerBar");
+
+// thời gian no tối đa = 4 tiếng
+const MAX_HUNGER_TIME = 4 * 60 * 60 * 1000; // 4h = ms
+let lastFed = Date.now(); // mặc định vừa ăn
+
+// lưu trạng thái ăn vào localStorage để giữ khi reload
+function saveHungerState() {
+  localStorage.setItem("lastFed", lastFed);
+}
+
+function loadHungerState() {
+  let saved = localStorage.getItem("lastFed");
+  if (saved) {
+    lastFed = parseInt(saved);
+  }
+}
+loadHungerState();
+
+// cập nhật thanh no/đói
+function updateHungerBar() {
+  let elapsed = Date.now() - lastFed;
+  let percent = Math.max(0, 100 - (elapsed / MAX_HUNGER_TIME) * 100);
+
+  hungerBar.style.width = percent + "%";
+
+  // đổi màu theo mức đói
+  if (percent > 60) {
+    hungerBar.style.background = "linear-gradient(90deg, #4caf50, #8bc34a)"; // xanh no
+  } else if (percent > 30) {
+    hungerBar.style.background = "linear-gradient(90deg, #ffeb3b, #ffc107)"; // vàng
+  } else {
+    hungerBar.style.background = "linear-gradient(90deg, #f44336, #e91e63)"; // đỏ đói
+  }
+}
+
+// gọi update mỗi 10s cho mượt
+setInterval(updateHungerBar, 10000);
+updateHungerBar();
+
+// khi bấm cho ăn -> reset thanh
+feedBtn.addEventListener("click", () => {
+  lastFed = Date.now();
+  saveHungerState();
+  updateHungerBar();
+});
 
 // 🐾 Pet di chuyển random
 setInterval(() => {
