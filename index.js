@@ -275,11 +275,23 @@ function movePet() {
   let x = Math.random() * (window.innerWidth - 100);
   let y = Math.random() * (window.innerHeight - 100);
 
-  // Di chuyển từ từ (transition 10 giây)
-  petEl.style.transition = "left 10s linear, top 10s linear";
+  // lấy vị trí cũ trước khi update
+  let oldX = petEl.offsetLeft;
+
+  // update vị trí mới
   petEl.style.left = `${x}px`;
   petEl.style.top = `${y}px`;
+
+  // lật ảnh nếu chạy sang trái
+  const petImg = document.getElementById("petImg");
+  if (x < oldX) {
+    petImg.classList.add("flip");
+  } else {
+    petImg.classList.remove("flip");
+  }
 }
+
+
 
 // cứ mỗi 10 giây chọn điểm mới để pet "đi dạo" tới
 setInterval(movePet, 5000);

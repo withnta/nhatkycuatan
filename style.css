@@ -361,3 +361,11 @@ body {
   75%  { transform: rotate(20deg) scale(1.1); }
   100% { transform: rotate(0deg) scale(1); }
 }
+.flip {
+  transform: scaleX(-1);
+}
+#petImg {
+  transition: transform 0.25s ease;
+  transform-origin: center center;
+  display: block;
+}
