@@ -210,9 +210,13 @@ setInterval(() => {
 // 🐾 Cho ăn
 feedBtn.addEventListener("click", () => {
   showBubble("Nom nom 🍖 ngon quá!");
-  petEl.style.transform = "scale(1.2)";
-  setTimeout(() => petEl.style.transform = "scale(1)", 500);
+  petEl.style.animation = "dance 1s ease-in-out 2";
+  petEl.addEventListener("animationend", () => {
+    petEl.style.animation = ""; // reset để lần sau còn nhảy tiếp
+  }, { once: true });
 });
+
+
 // 🥩 Thanh no/đói
 const hungerBar = document.getElementById("hungerBar");
 
