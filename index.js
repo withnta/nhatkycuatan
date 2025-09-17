@@ -218,7 +218,7 @@ const hungerBar = document.getElementById("hungerBar");
 
 // thời gian no tối đa = 4 tiếng
 const MAX_HUNGER_TIME = 4 * 60 * 60 * 1000; // 4h = ms
-let lastFed = Date.now(); // mặc định vừa ăn
+let lastFed = 0; 
 
 // lưu trạng thái ăn vào localStorage để giữ khi reload
 function saveHungerState() {
@@ -235,18 +235,23 @@ loadHungerState();
 
 // cập nhật thanh no/đói
 function updateHungerBar() {
+  if (!lastFed) {
+    hungerBar.style.height = "0%"; // đói bụng
+    hungerBar.style.background = "linear-gradient(0deg, #f44336, #e91e63)";
+    return;
+  }
+
   let elapsed = Date.now() - lastFed;
   let percent = Math.max(0, 100 - (elapsed / MAX_HUNGER_TIME) * 100);
 
-  hungerBar.style.width = percent + "%";
+  hungerBar.style.height = percent + "%";
 
-  // đổi màu theo mức đói
   if (percent > 60) {
-    hungerBar.style.background = "linear-gradient(90deg, #4caf50, #8bc34a)"; // xanh no
+    hungerBar.style.background = "linear-gradient(0deg, #4caf50, #8bc34a)";
   } else if (percent > 30) {
-    hungerBar.style.background = "linear-gradient(90deg, #ffeb3b, #ffc107)"; // vàng
+    hungerBar.style.background = "linear-gradient(0deg, #ffeb3b, #ffc107)";
   } else {
-    hungerBar.style.background = "linear-gradient(90deg, #f44336, #e91e63)"; // đỏ đói
+    hungerBar.style.background = "linear-gradient(0deg, #f44336, #e91e63)";
   }
 }
 
@@ -261,13 +266,22 @@ feedBtn.addEventListener("click", () => {
   updateHungerBar();
 });
 
-// 🐾 Pet di chuyển random
-setInterval(() => {
+// 🐾 Pet di chuyển chill
+function movePet() {
   let x = Math.random() * (window.innerWidth - 100);
   let y = Math.random() * (window.innerHeight - 100);
+
+  // Di chuyển từ từ (transition 10 giây)
+  petEl.style.transition = "left 10s linear, top 10s linear";
   petEl.style.left = `${x}px`;
   petEl.style.top = `${y}px`;
-}, 3000); // mỗi 5s chạy sang chỗ khác
+}
+
+// cứ mỗi 10 giây chọn điểm mới để pet "đi dạo" tới
+setInterval(movePet, 5000);
+
+// gọi 1 lần ngay để nó bắt đầu di chuyển
+movePet();
 function showBubble(msg) {
   bubbleEl.textContent = msg;
   bubbleEl.classList.remove("hidden");
